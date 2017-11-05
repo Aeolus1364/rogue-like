@@ -13,7 +13,7 @@ FPS = 30
 surface = pygame.display.set_mode((DISPLAY_X, DISPLAY_Y))  # pygame.FULLSCREEN
 clock = pygame.time.Clock()
 
-door = pygame.image.load("cell_door.png")
+# door = pygame.image.load("cell_door.png")
 
 
 class Main:
