@@ -17,32 +17,12 @@ def collision_detect(box1, box2):
             return True
 
 
-def collision_prevent(ent):
-    x_diff = ent.x - ent.x_past
-    y_diff = ent.y - ent.y_past
-    change = 0
+def collision_resolve(player, entity):
+    player_pos1 = (player.x_past, player.y_past)
+    player_pos2 = (player.x, player.y)
 
-    try:
-        slope = y_diff/x_diff
-    except ZeroDivisionError:
-        slope = 0
+    player
 
-    yint = ent.y - (ent.x * slope)
+    entity_pos = (entity.x, entity.y)
 
-    # range(1, 3, stepping by 1) includes values from 0 to 2, therefore 1 needs to  be added to it (vice versa for -)
-
-    if ent.x_past <= ent.x:  # sets stepping value and adds to max of range for reason above
-        change = 1
-    if ent.x_past > ent.x:
-        change = -1
-
-    list = []
-
-    for i in range(ent.x_past, ent.x + change, change):
-        yval = round(i * slope + yint)
-        list.append(yval)
-        if yval == 400:
-            ent.y = 400 - ent.y_length
-    print(list)
-    # print(list)
-    # print(slope, yint)
+    slope =
