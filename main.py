@@ -6,11 +6,11 @@ import entity
 
 pygame.init()
 
-DISPLAY_X = 832
-DISPLAY_Y = 640
-FPS = 60
+DISPLAY_X = 1280
+DISPLAY_Y = 720
+FPS = 30
 
-surface = pygame.display.set_mode((DISPLAY_X, DISPLAY_Y))  # pygame.FULLSCREEN
+surface = pygame.display.set_mode((DISPLAY_X, DISPLAY_Y), pygame.FULLSCREEN)  # pygame.FULLSCREEN
 clock = pygame.time.Clock()
 
 # door = pygame.image.load("cell_door.png")
