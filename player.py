@@ -14,7 +14,7 @@ class Player:
         self.x_acceleration = 0
         self.y_acceleration = 0
         self.acceleration = 4
-        self.max_velocity = 10
+        self.max_velocity = 5
         self.velocity_decay = 4
         self.x_length = 60
         self.y_length = 60

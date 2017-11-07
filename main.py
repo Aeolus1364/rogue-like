@@ -8,7 +8,7 @@ pygame.init()
 
 DISPLAY_X = 832
 DISPLAY_Y = 640
-FPS = 30
+FPS = 60
 
 surface = pygame.display.set_mode((DISPLAY_X, DISPLAY_Y))  # pygame.FULLSCREEN
 clock = pygame.time.Clock()
@@ -26,7 +26,7 @@ class Main:
             self.joystick.init()
             self.use_joystick = True
             self.player.use_joystick = True
-        self.entity1 = entity.Entity(400, 400, 80, 80, door, surface, 0, (0,0,0))
+        self.entity1 = entity.Entity(400, 400, 80, 80, 0, surface, 0, (0,0,0))
 
     def use_joy(self, use):
         if use:
@@ -88,7 +88,6 @@ class Main:
             self.entity1.render()
 
             self.player.render()
-
 
             surface.blit(pygame.font.SysFont(None, 25).render(str(self.player.x) + ", " + str(self.player.y), True, (200, 0, 100)), [0,0])
             surface.blit(pygame.font.SysFont(None, 25).render(str(self.player.x_velocity) + ", " + str(self.player.y_velocity), True, (200, 0, 100)), [0,25])
