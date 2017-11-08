@@ -6,11 +6,11 @@ import entity
 
 pygame.init()
 
-DISPLAY_X = 1280
-DISPLAY_Y = 720
+DISPLAY_X = 300
+DISPLAY_Y = 300
 FPS = 30
 
-surface = pygame.display.set_mode((DISPLAY_X, DISPLAY_Y), pygame.FULLSCREEN)  # pygame.FULLSCREEN
+surface = pygame.display.set_mode((DISPLAY_X, DISPLAY_Y))  # pygame.FULLSCREEN
 clock = pygame.time.Clock()
 
 # door = pygame.image.load("cell_door.png")
@@ -81,7 +81,7 @@ class Main:
 
             surface.fill((255, 255, 255))
 
-            collide.collision_prevent(self.player)
+            collide.collision_resolve(self.player, self.entity1)
 
             self.player.move()
 

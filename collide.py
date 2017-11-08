@@ -18,11 +18,16 @@ def collision_detect(box1, box2):
 
 
 def collision_resolve(player, entity):
-    player_pos1 = (player.x_past, player.y_past)
-    player_pos2 = (player.x, player.y)
-
-    player
+    player_x1 = player.x_past
+    player_x2 = player.x
+    player_y1 = player.y_past
+    player_y2 = player.y
 
     entity_pos = (entity.x, entity.y)
+    try:
+        slope = (player_y1 - player_y2) / (player_x1 - player_x2)
+        intercept = player_x1 - player_y1 * slope
+        print("y = " + str(round(slope, 3)) + "x + " + str(round(intercept, 3)))
+    except ZeroDivisionError:
+        print("y change")
 
-    slope =
