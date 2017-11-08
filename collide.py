@@ -24,10 +24,21 @@ def collision_resolve(player, entity):
     player_y2 = player.y
 
     entity_pos = (entity.x, entity.y)
-    try:
-        slope = (player_y1 - player_y2) / (player_x1 - player_x2)
+
+    delta_y = player_y2 - player_y1  # calculating change in x and y
+    delta_x = player_x2 - player_x1
+
+    if not delta_x and not delta_y:  # if there is not x or y change, the player isn't moving
+        print("No motion")
+
+    elif not delta_x and delta_y:  # if there is no change in x, the player is moving only on x axis
+        print("X =", player_x1)
+
+    elif delta_x and not delta_y:  # if there is no change in y, the player is moving only on y axis
+        print("Y =", player_y1)
+
+    else:  # if there is a change in x and y, the linear equation is found
+        slope = delta_y / delta_x
         intercept = player_x1 - player_y1 * slope
         print("y = " + str(round(slope, 3)) + "x + " + str(round(intercept, 3)))
-    except ZeroDivisionError:
-        print("y change")
 
