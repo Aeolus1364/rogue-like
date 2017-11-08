@@ -6,8 +6,8 @@ import entity
 
 pygame.init()
 
-DISPLAY_X = 300
-DISPLAY_Y = 300
+DISPLAY_X = 800
+DISPLAY_Y = 800
 FPS = 30
 
 surface = pygame.display.set_mode((DISPLAY_X, DISPLAY_Y))  # pygame.FULLSCREEN

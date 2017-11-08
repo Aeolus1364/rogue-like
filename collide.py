@@ -28,14 +28,38 @@ def collision_resolve(player, entity):
     delta_y = player_y2 - player_y1  # calculating change in x and y
     delta_x = player_x2 - player_x1
 
+    if delta_y > 0:  # calculates the step direction for resolution for loop
+        loop_delta_y = 1
+    else:
+        loop_delta_y = -1  # defaults to -1, but doesn't matter, only used in event of motion
+
+    if delta_x > 0:
+        loop_delta_x = 1
+    else:
+        loop_delta_x = -1
+
+    print(delta_y, loop_delta_y)
+
     if not delta_x and not delta_y:  # if there is not x or y change, the player isn't moving
         print("No motion")
 
-    elif not delta_x and delta_y:  # if there is no change in x, the player is moving only on x axis
+
+    elif not delta_x and delta_y:  # if there is no change in x, the player is moving only on y axis
         print("X =", player_x1)
 
-    elif delta_x and not delta_y:  # if there is no change in y, the player is moving only on y axis
+        list = []
+
+        # for loop from 3 to 5 will only loop through 3 to 4, 1 needs to be added in the appropriate direction
+        # step number is either +1 or -1 depending on the loop_delta value
+        for i in range(player_y1, player_y2 + loop_delta_y, loop_delta_y):
+            list.append(i)
+
+        print(list)
+
+
+    elif delta_x and not delta_y:  # if there is no change in y, the player is moving only on x axis
         print("Y =", player_y1)
+
 
     else:  # if there is a change in x and y, the linear equation is found
         slope = delta_y / delta_x
