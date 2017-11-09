@@ -17,16 +17,17 @@ def collision_detect(box1, box2):
             return True
 
 
-def collision_resolve(player, entity):
-    player_x1 = player.x_past
-    player_x2 = player.x
-    player_y1 = player.y_past
-    player_y2 = player.y
+def collision_resolve(mover, entity):
+    mover_x1 = mover.x_past
+    mover_x2 = mover.x
+    mover_y1 = mover.y_past
+    mover_y2 = mover.y
 
     entity_pos = (entity.x, entity.y)
+    entity_pos2 = (entity.x + entity.x_length, entity.y + entity.y_length)
 
-    delta_y = player_y2 - player_y1  # calculating change in x and y
-    delta_x = player_x2 - player_x1
+    delta_y = mover_y2 - mover_y1  # calculating change in x and y
+    delta_x = mover_x2 - mover_x1
 
     if delta_y > 0:  # calculates the step direction for resolution for loop
         loop_delta_y = 1
@@ -38,31 +39,94 @@ def collision_resolve(player, entity):
     else:
         loop_delta_x = -1
 
-    print(delta_y, loop_delta_y)
-
     if not delta_x and not delta_y:  # if there is not x or y change, the player isn't moving
         print("No motion")
 
-
     elif not delta_x and delta_y:  # if there is no change in x, the player is moving only on y axis
-        print("X =", player_x1)
+        print("X =", mover_x1)
 
-        list = []
-
+        base_x = mover_x1
+        end_loop = False
         # for loop from 3 to 5 will only loop through 3 to 4, 1 needs to be added in the appropriate direction
         # step number is either +1 or -1 depending on the loop_delta value
-        for i in range(player_y1, player_y2 + loop_delta_y, loop_delta_y):
-            list.append(i)
-
-        print(list)
-
+        print(mover_y1, mover_y2)
+        for i in range(mover_y1, mover_y2 + loop_delta_y, loop_delta_y):
+            if end_loop:
+                break
+            coords = ((base_x, i), (base_x + mover.x_length, i), (base_x, i + mover.y_length), (base_x + mover.x_length, i + mover.y_length))
+            for j in coords:
+                x = j[0]
+                y = j[1]
+                if x == entity_pos[0] or x == entity_pos2[0] and entity_pos[1] <= x <= entity_pos2[1]:
+                    mover.x = base_x
+                    mover.y = int(i)
+                    end_loop = True
+                    break
+                if y == entity_pos[1] or y == entity_pos2[1] and entity_pos[0] <= y <= entity_pos2[0]:
+                    mover.x = base_x
+                    mover.y = int(i)
+                    end_loop = True
+                    break
 
     elif delta_x and not delta_y:  # if there is no change in y, the player is moving only on x axis
-        print("Y =", player_y1)
+        print("Y =", mover_y1)
 
+        base_y = mover_y1
+        end_loop = False
+        # for loop from 3 to 5 will only loop through 3 to 4, 1 needs to be added in the appropriate direction
+        # step number is either +1 or -1 depending on the loop_delta value
+        print(mover_y1, mover_y2)
+        for i in range(mover_x1, mover_x2 + loop_delta_x, loop_delta_x):
+            if end_loop:
+                break
+            coords = ((base_y, i), (base_y + mover.y_length, i), (base_y, i + mover.x_length),
+                      (base_y + mover.y_length, i + mover.x_length))
+            for j in coords:
+                x = j[0]
+                y = j[1]
+                if x == entity_pos[0] or x == entity_pos2[0] and entity_pos[1] <= x <= entity_pos2[1]:
+                    mover.x = int(i)
+                    mover.y = base_y
+                    end_loop = True
+                    break
+                if y == entity_pos[1] or y == entity_pos2[1] and entity_pos[0] <= y <= entity_pos2[0]:
+                    mover.x = int(i)
+                    mover.y = base_y
+                    end_loop = True
+                    break
 
     else:  # if there is a change in x and y, the linear equation is found
         slope = delta_y / delta_x
-        intercept = player_x1 - player_y1 * slope
-        print("y = " + str(round(slope, 3)) + "x + " + str(round(intercept, 3)))
+        intercept = mover_y1 - mover_x1 * slope
+        slope2 = (mover_y2 - mover_y1) / (mover_x2 - mover_x1)  # calculates slope based on two points
+        intercept2 = mover_y1 - mover_x1 * slope  # calculates y intercept for linear equation
 
+        print(slope, slope2, intercept, intercept2)
+
+        # print("y = " + str(round(slope, 3)) + "x + " + str(round(intercept, 3)))
+        end_loop = False
+
+        for x in range(mover_x1, mover_x2 + loop_delta_x, loop_delta_x):
+            if end_loop:
+                break
+            y = slope * x + intercept
+            coords = ((x, y), (x + mover.x_length, y), (x, y + mover.y_length), (x + mover.x_length, y + mover.y_length))
+            # print(coords)
+            for c in coords:
+                xs = round(c[0])
+                ys = round(c[1])
+                if xs == entity_pos[0] or xs == entity_pos2[0] and entity_pos[1] <= xs <= entity_pos2[1]:
+                    mover.x = x
+                    mover.y = int(y)
+                    end_loop = True
+                    break
+                if ys == entity_pos[1] or ys == entity_pos2[1] and entity_pos[0] <= ys <= entity_pos2[0]:
+                    mover.x = x
+                    mover.y = int(y)
+                    end_loop = True
+                    break
+
+
+def collision_system(mover, entity):
+    if collision_detect(mover, entity):
+        collision_resolve(mover, entity)

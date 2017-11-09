@@ -81,9 +81,9 @@ class Main:
 
             surface.fill((255, 255, 255))
 
-            collide.collision_resolve(self.player, self.entity1)
-
             self.player.move()
+
+            collide.collision_system(self.player, self.entity1)
 
             self.entity1.render()
 
