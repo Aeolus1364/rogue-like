@@ -8,7 +8,7 @@ pygame.init()
 
 DISPLAY_X = 800
 DISPLAY_Y = 800
-FPS = 30
+FPS = 60
 
 surface = pygame.display.set_mode((DISPLAY_X, DISPLAY_Y))  # pygame.FULLSCREEN
 clock = pygame.time.Clock()
@@ -20,13 +20,14 @@ class Main:
     def __init__(self):
         self.game_exit = False
         self.use_joystick = False
-        self.player = player.Player(surface, 300, 300, self.use_joystick)
+        self.player = player.Player(surface, 500, 330, self.use_joystick)
         if pygame.joystick.get_count():
             self.joystick = pygame.joystick.Joystick(0)
             self.joystick.init()
             self.use_joystick = True
             self.player.use_joystick = True
-        self.entity1 = entity.Entity(400, 400, 80, 80, 0, surface, 0, (0,0,0))
+        self.entity1 = entity.Entity(400, 400, 30, 80, 0, surface, 0, (0, 0, 0))
+        self.entity2 = entity.Entity(490, 400, 80, 30, 0, surface, 0, (0, 0, 0))
 
     def use_joy(self, use):
         if use:
@@ -84,10 +85,14 @@ class Main:
             self.player.move()
 
             collide.collision_system(self.player, self.entity1)
+            collide.collision_system(self.player, self.entity2)
 
+            self.entity2.render()
             self.entity1.render()
 
             self.player.render()
+
+            print(clock.get_fps())
 
             surface.blit(pygame.font.SysFont(None, 25).render(str(self.player.x) + ", " + str(self.player.y), True, (200, 0, 100)), [0,0])
             surface.blit(pygame.font.SysFont(None, 25).render(str(self.player.x_velocity) + ", " + str(self.player.y_velocity), True, (200, 0, 100)), [0,25])

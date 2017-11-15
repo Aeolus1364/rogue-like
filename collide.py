@@ -1,8 +1,8 @@
-def collision_detect(box1, box2):
-    side_left1 = box1.x
-    side_right1 = box1.x + box1.x_length
-    side_top1 = box1.y
-    side_bottom1 = box1.y + box1.y_length
+def collision_detect(box1, box1_x, box1_y, box2):
+    side_left1 = box1_x
+    side_right1 = box1_x + box1.x_length
+    side_top1 = box1_y
+    side_bottom1 = box1_y + box1.y_length
 
     side_left2 = box2.x
     side_right2 = box2.x + box2.x_length
@@ -12,12 +12,37 @@ def collision_detect(box1, box2):
     if side_right1 > side_left2 > side_left1 or side_right1 > side_right2 > side_left1 or (side_right1 == side_right2 and side_left1 == side_left2):  # are x sides of box1 in box2
         if side_bottom1 > side_top2 > side_top1 or side_bottom1 > side_bottom2 > side_top1 or (side_bottom1 == side_bottom2 and side_top1 == side_top2):  # ^ but for y sides
             return True
+    # not redundant, needed for different sizes
     if side_right2 > side_left1 > side_left2 or side_right2 > side_right1 > side_left2:  # are x sides of box2 in box1
         if side_bottom2 > side_top1 > side_top2 or side_bottom2 > side_bottom1 > side_top2:  # ^ but for y sides
             return True
 
 
-def collision_resolve(mover, entity):
+def collision_single_axis_x(entity1, entity2):
+    if entity1.x_velocity > 0:
+        entity1.x = entity2.x - entity1.x_length
+    elif entity1.x_velocity < 0:
+        entity1.x = entity2.x + entity2.x_length
+    # entity1.x_velocity = 0
+
+
+def collision_single_axis_y(entity1, entity2):
+    if entity1.y_velocity > 0:
+        entity1.y = entity2.y - entity1.y_length
+    elif entity1.y_velocity < 0:
+        entity1.y = entity2.y + entity2.y_length
+    # entity1.y_velocity = 0
+
+
+def collision_system(mover, entity):
+    if collision_detect(mover, mover.x, mover.y, entity):
+        if collision_detect(mover, mover.x, mover.y_past, entity):
+            collision_single_axis_x(mover, entity)
+        if collision_detect(mover, mover.x, mover.y, entity):
+            collision_single_axis_y(mover, entity)
+
+
+def collision_resolveold(mover, entity):
     mover_x1 = mover.x_past
     mover_x2 = mover.x
     mover_y1 = mover.y_past
@@ -125,8 +150,3 @@ def collision_resolve(mover, entity):
                     mover.y = int(y)
                     end_loop = True
                     break
-
-
-def collision_system(mover, entity):
-    if collision_detect(mover, entity):
-        collision_resolve(mover, entity)
